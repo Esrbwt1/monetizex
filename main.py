@@ -4,6 +4,8 @@ from fastapi import Depends, HTTPException
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
 from database import SessionLocal, init_db, EmailSignup
+from fastapi.middleware.cors import CORSMiddleware
+
 
 # Dependency to get the database session
 def get_db():
@@ -19,6 +21,15 @@ class EmailSignupCreate(BaseModel):
 
 # Create an instance of the FastAPI class
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # You can replace "*" with the specific origin of your GitHub Pages if you want to restrict access
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 init_db()
 
 # Define a route (endpoint) that returns a simple message
