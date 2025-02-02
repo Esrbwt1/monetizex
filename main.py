@@ -40,3 +40,11 @@ def create_email_signup(signup: EmailSignupCreate, db: Session = Depends(get_db)
     db.refresh(new_signup)
     
     return {"message": "Thank you for signing up!", "email": new_signup.email}
+
+@app.get("/signups")
+def read_signups(db: Session = Depends(get_db)):
+    # Query all email sign-ups from the database.
+    signups = db.query(EmailSignup).all()
+    # Create a list of email addresses to return.
+    emails = [signup.email for signup in signups]
+    return {"signups": emails}
