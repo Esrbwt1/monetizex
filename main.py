@@ -18,6 +18,11 @@ def get_db():
 # Define a Pydantic model for the email signup data
 class EmailSignupCreate(BaseModel):
     email: str
+    
+# Define a model for content input
+class ContentData(BaseModel):
+    content: str
+
 
 # Create an instance of the FastAPI class
 app = FastAPI()
@@ -59,3 +64,22 @@ def read_signups(db: Session = Depends(get_db)):
     # Create a list of email addresses to return.
     emails = [signup.email for signup in signups]
     return {"signups": emails}
+
+@app.post("/monetize")
+def monetize_content(data: ContentData):
+    # Extract the content from the request
+    content = data.content
+    
+    # Dummy analysis: simulate AI by checking for keywords.
+    # (In the future, this is where you could integrate a call to an AI service like OpenAI's API.)
+    if "video" in content.lower():
+        strategy = "Integrate video ads and seek sponsorship opportunities."
+    elif "blog" in content.lower():
+        strategy = "Consider affiliate marketing and sponsored posts."
+    elif "podcast" in content.lower():
+        strategy = "Explore podcast sponsorships and premium content subscriptions."
+    else:
+        strategy = "Consider a mix of affiliate marketing, digital products, and display ads."
+    
+    # Return the simulated monetization strategy as JSON.
+    return {"strategy": strategy}
